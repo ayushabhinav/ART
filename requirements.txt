@@ -1,0 +1,8 @@
+PyQt5==5.15.11
+sounddevice==0.4.6
+scipy==1.7.3
+openai-whisper
+torch
+transformers
+datasets
+librosa

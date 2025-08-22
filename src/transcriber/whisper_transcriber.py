@@ -4,14 +4,8 @@ import librosa
 import logging
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 
-import requests
 from huggingface_hub import configure_http_backend
-
-
-def backend_factory() -> requests.Session:
-    session = requests.Session()
-    session.verify = False
-    return session
+from src.transcriber.utils import backend_factory
 
 
 class AudioTranscriber:
@@ -25,10 +19,7 @@ class AudioTranscriber:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model.to(self.device)
 
-    def transcribe(self, audio_path):
-        if not os.path.exists(audio_path):
-            raise FileNotFoundError(f"Audio file not found: {audio_path}")
-        audio, sr = librosa.load(audio_path, sr=16000)
+    def _transcribe(self, audio):
         input_features = self.processor(
             audio, sampling_rate=16000, return_tensors="pt"
         ).input_features
@@ -37,6 +28,13 @@ class AudioTranscriber:
         transcription = self.processor.batch_decode(
             predicted_ids, skip_special_tokens=True
         )[0]
+        return transcription
+
+    def transcribe(self, audio_path):
+        if not os.path.exists(audio_path):
+            raise FileNotFoundError(f"Audio file not found: {audio_path}")
+        audio, sr = librosa.load(audio_path, sr=16000)
+        transcription = self._transcribe(audio)
         return transcription
 
 

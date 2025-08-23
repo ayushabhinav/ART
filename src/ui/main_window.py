@@ -1,3 +1,4 @@
+import os
 import sounddevice as sd
 from widgets.status import StatusLabel
 from src.widgets.summary_button import SummaryButton
@@ -13,7 +14,7 @@ from src.actions import (
     save_transcript,
     handle_settings_action,
 )
-
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
@@ -33,6 +34,11 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Meeting Recorder")
+        icon_path = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), "assets", "app_icon.png"
+        )
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
         self.setMinimumSize(700, 400)
         main_layout = QVBoxLayout()
 

@@ -46,10 +46,7 @@ class SpeechDiarizer:
 if __name__ == "__main__":
 
     # Example usage:
-    hf_token = "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"
+    hf_token = ""
     diarizer = SpeechDiarizer(hf_token, disable_ssl=True)
     diarizer.execute("recording.wav")
     # Each segment: (start_time, end_time, speaker_label)
-
-
-# -->  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

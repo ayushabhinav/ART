@@ -9,6 +9,7 @@ from src.widgets.save_file_dialog import SaveFileDialog
 from src.widgets.error_message_box import ErrorMessageBox
 
 # from src.transcriber.whisper_transcriber import AudioTranscriber
+from src.config import CONFIG
 from src.transcriber.transcriber import Transcriber
 from src.transcriber.meeting_summarizer import MeetingSummarizer
 from PyQt5.QtCore import QThread, pyqtSignal, QObject
@@ -116,7 +117,11 @@ class TranscriptionWorker(QObject):
             # print(f"text: {text}", file=sys.stdout)
             # self.finished.emit(text)
 
-            Transcriber.transcribe(self.file_path, hf_token="", disable_SSL=True)
+            Transcriber.transcribe(
+                self.file_path,
+                hf_token=CONFIG.get("hf_token", ""),
+                disable_SSL=CONFIG.get("disable_ssl", False),
+            )
             self.finished.emit("done")
 
         except Exception as e:

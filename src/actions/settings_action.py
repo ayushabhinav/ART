@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
     QCheckBox,
 )
 
-from src.config import load_settings, save_settings
+from src.config import load_settings, save_settings, CONFIG
 
 
 def handle_settings_action(self):
@@ -75,6 +75,7 @@ def handle_settings_action(self):
             "language": self.lang_combo.currentText(),
         }
         save_settings(settings)
+        CONFIG.update(settings)
         print("Settings saved:", settings)
         dialog.accept()
 

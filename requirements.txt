@@ -6,3 +6,5 @@ torch
 transformers
 datasets
 librosa
+pyannote.audio
+pyannote-audio[separation]
